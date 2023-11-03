@@ -28,7 +28,7 @@ app.add_middleware(
 async def startup():
     print("Startup tasks")
     # Start the tracker service
-    # asyncio.create_task(tracker_service.track())
+    asyncio.create_task(tracker_service.track())
 
 
 # Routes
