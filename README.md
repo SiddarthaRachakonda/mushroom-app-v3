@@ -32,6 +32,14 @@ In this section we will deploy the Mushroom App to GCP. For this we will create 
 * Build and Tag the Docker Image: `docker build -t  <USER NAME>/mushroom-app-frontend -f Dockerfile .`
 * Push to Docker Hub: `docker push <USER NAME>/mushroom-app-frontend`
 
+Docker Build, Tag & Push commands should look like this:
+```
+docker build -t dlops/mushroom-app-api-service --platform=linux/amd64/v2 -f Dockerfile .
+docker push dlops/mushroom-app-api-service
+
+docker build -t dlops/mushroom-app-frontend --platform=linux/amd64/v2 -f Dockerfile .
+docker push dlops/mushroom-app-frontend
+```
 
 ### Running Docker Containers on VM
 
