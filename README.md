@@ -81,17 +81,25 @@ sudo docker network create mushroom-app
 Run the container using the following command
 ```
 sudo docker run -d --name api-service \
---mount type=bind,source="$(pwd)/persistent-folder/",target=/persistent \
---mount type=bind,source="$(pwd)/secrets/",target=/secrets \
+-v $(pwd)/persistent-folder/":/persistent \
+-v "$(pwd)/secrets/":/secrets \
 -p 9000:9000 \
 -e GOOGLE_APPLICATION_CREDENTIALS=/secrets/bucket-reader.json \
--e GCP_PROJECT=ai5-project \
--e GCP_ZONE=us-central1-a --network mushroom-app dlops/mushroom-app-api-service
+-e GCS_BUCKET_NAME=mushroom-app-models \
+--network mushroom-app dlops/mushroom-app-api-service
 ```
+
 
 If you want to run in interactive mode like we id in development:
 ```
-sudo docker run --rm -ti --name api-service --mount type=bind,source="$(pwd)/persistent-folder/",target=/persistent --mount type=bind,source="$(pwd)/secrets/",target=/secrets -p 9000:9000 -e GOOGLE_APPLICATION_CREDENTIALS=/secrets/bucket-reader.json -e GCP_PROJECT=ai5-project -e GCP_ZONE=us-central1-a -e DEV=1 --network mushroom-app dlops/mushroom-app-api-service
+sudo docker run --rm -ti --name api-service \
+-v $(pwd)/persistent-folder/":/persistent \
+-v "$(pwd)/secrets/":/secrets \
+-p 9000:9000 \
+-e GOOGLE_APPLICATION_CREDENTIALS=/secrets/bucket-reader.json \
+-e GCS_BUCKET_NAME=mushroom-app-models \
+-e DEV=1 \
+--network mushroom-app dlops/mushroom-app-api-service
 ```
 
 #### Run frontend
