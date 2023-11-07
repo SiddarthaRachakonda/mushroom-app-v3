@@ -46,6 +46,7 @@ docker push dlops/mushroom-app-frontend
 #### Install Docker on VM
 * Create a VM Instance from [GCP](https://console.cloud.google.com/compute/instances)
 * When creating the VM, you can select all the default values but ensure to select:
+	- Machine Type: N2D
 	- Allow HTTP traffic
 	- Allow HTTPS traffic
 * SSH into your newly created instance
@@ -89,7 +90,7 @@ sudo docker network create mushroom-app
 Run the container using the following command
 ```
 sudo docker run -d --name api-service \
--v $(pwd)/persistent-folder/":/persistent \
+-v "$(pwd)/persistent-folder/":/persistent \
 -v "$(pwd)/secrets/":/secrets \
 -p 9000:9000 \
 -e GOOGLE_APPLICATION_CREDENTIALS=/secrets/bucket-reader.json \
@@ -101,7 +102,7 @@ sudo docker run -d --name api-service \
 If you want to run in interactive mode like we id in development:
 ```
 sudo docker run --rm -ti --name api-service \
--v $(pwd)/persistent-folder/":/persistent \
+-v "$(pwd)/persistent-folder/":/persistent \
 -v "$(pwd)/secrets/":/secrets \
 -p 9000:9000 \
 -e GOOGLE_APPLICATION_CREDENTIALS=/secrets/bucket-reader.json \
