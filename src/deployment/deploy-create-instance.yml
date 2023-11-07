@@ -18,6 +18,8 @@
         target_tags: "http-server"
         credentials_file: "{{ gcp_service_account_file }}"
         service_account_email: "{{ gcp_service_account_email }}"
+      when: cluster_state == "present"
+
     # Add firewall rules for https
     - name: "Create https firewall rule"
       gce_net:
@@ -30,6 +32,8 @@
         target_tags: "http-server"
         credentials_file: "{{ gcp_service_account_file }}"
         service_account_email: "{{ gcp_service_account_email }}"
+      when: cluster_state == "present"
+
     # Create Persistent Disk
     - name: Create Compute disk
       gcp_compute_disk:
@@ -40,8 +44,10 @@
         project: "{{ gcp_project }}"
         name: "{{ persistent_disk_name }}"
         size_gb: "{{ persistent_disk_size }}"
-        state: "present"
+        state: present
       register: disk
+      when: cluster_state == "present"
+
     # Create Compute Instance
     - name: Create instance
       gcp_compute_instance:
@@ -66,11 +72,27 @@
             - https-server
         zone: "{{ gcp_zone }}"
         project: "{{ gcp_project }}"
-        state: present
+        state: "{{ cluster_state }}"
       register: instance
+
+    # Remove Persistent Disk
+    - name: Remove Compute disk
+      gcp_compute_disk:
+        auth_kind: "{{gcp_auth_kind}}"
+        service_account_file: "{{ gcp_service_account_file }}"
+        scopes: "{{gcp_scopes}}"
+        zone: "{{ gcp_zone }}"
+        project: "{{ gcp_project }}"
+        name: "{{ persistent_disk_name }}"
+        size_gb: "{{ persistent_disk_size }}"
+        state: absent
+      register: disk
+      when: cluster_state == "absent"
 
     - name: Wait for SSH to come up
       wait_for: host={{ instance.networkInterfaces[0].accessConfigs[0].natIP }} port=22 delay=10 timeout=120
+      when: cluster_state == "present"
 
     - name: Add host to groupname
       add_host: hostname={{ instance.networkInterfaces[0].accessConfigs[0].natIP }} groupname=new_instances
+      when: cluster_state == "present"
