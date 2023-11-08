@@ -1,4 +1,4 @@
-# Mushroom App - Deployment
+# Mushroom App - Deployment & Scaling
 
 
 ## Deployment to GCP (Manual)
@@ -340,7 +340,28 @@ ansible-playbook deploy-create-instance.yml -i inventory.yml --extra-vars cluste
 ```
 
 
+## Deployment with Scaling using Kubernetes
 
+In this section we will deploy the mushroom app to a K8s cluster
+
+### API's to enable in GCP for Project
+Search for each of these in the GCP search bar and click enable to enable these API's
+* Compute Engine API
+* Service Usage API
+* Cloud Resource Manager API
+* Google Container Registry API
+* Kubernetes Engine API
+
+### Start Deployment Docker Container
+-  `cd deployment`
+- Run `sh docker-shell.sh` or `docker-shell.bat` for windows
+- Check versions of tools
+`gcloud --version`
+`kubectl version`
+`kubectl version --client`
+
+- Check if make sure you are authenticated to GCP
+- Run `gcloud auth list`
 
 
 
