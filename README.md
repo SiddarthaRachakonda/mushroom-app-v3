@@ -288,6 +288,9 @@ The username is `sa_100110341521630214262`
 
 ### Deployment
 
+#### Create a repo in artifact registry `gcr.io` and give permission
+* Artifact Registry Administrator
+
 #### Build and Push Docker Containers to GCR (Google Container Registry)
 ```
 ansible-playbook deploy-docker-images.yml -i inventory.yml
